@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary Team Leader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0b1020;
+            --card: #121a33;
+            --accent: #4da3ff;
+            --danger: #ff4d4d;
+            --text: #eaf0ff;
+            --lightning-white: #ffffff;
+            --lightning-blue: #4da3ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #060b1a, #0b1020);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* HEADER */
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        /* PYRAMID LAYOUT */
+        .pyramid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .row {
+            display: flex;
+            gap: 26px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* CARD */
+        .card {
+            width: 320px;
+            position: relative;
+            background: linear-gradient(160deg, #141c3a, #0f1530);
+            border-radius: 18px;
+            padding: 26px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        /* AVATAR */
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            background: linear-gradient(135deg, #5f9cff, #a3c9ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #08122e;
+        }
+
+        /* NAME */
+        .name {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        /* ERRORS */
+        .errors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .error {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 10px;
+            border-radius: 8px;
+        }
+
+        .error i {
+            color: var(--accent);
+        }
+
+        /* TOTAL */
+        .total-box {
+            margin-top: 18px;
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .total-label {
+            background: #10255a;
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        .total-value {
+            background: var(--danger);
+            padding: 14px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* SISA */
+        .sisa {
+            margin-top: 14px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.25);
+            font-size: 14px;
+        }
+
+        /* LIGHTNING CANVAS */
+        .lightning-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Summary Team Leader</h1>
+    <div class="pyramid" id="pyramid"></div>
+    <footer>Created by Mulya.id</footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxZKVtPdJUHQQs2KQy45HlwBDihFB3F0V5TQwjtW72-XXWkC3juCQPZTqz5zsb1aqC6IA/exec";
+
+        const categories = [
+            { key: "Rusak/Pecah/Cacat", label: "Barang Rusak", icon: "fa-glass-water-droplet" },
+            { key: "Barang Kurang", label: "Barang Kurang", icon: "fa-minus-circle" },
+            { key: "Kurang Sparepart", label: "Kurang Sparepart", icon: "fa-box-open" },
+            { key: "Salah Kirim", label: "Salah Kirim", icon: "fa-triangle-exclamation" },
+            { key: "Lebih Kirim", label: "Lebih Kirim", icon: "fa-plus-circle" },
+            { key: "Barang Hilang", label: "Barang Hilang", icon: "fa-magnifying-glass" }
+        ];
+
+        fetch(API_URL)
+            .then(r => r.json())
+            .then(res => {
+                const data = res.data.sort((a, b) => a["Total Complain"] - b["Total Complain"]);
+
+                const top = data.slice(0, 2);
+                const bottom = data.slice(2);
+
+                const pyramid = document.getElementById("pyramid");
+
+                pyramid.appendChild(makeRow(top));
+                pyramid.appendChild(makeRow(bottom));
+            });
+
+        function makeRow(arr) {
+            const row = document.createElement("div");
+            row.className = "row";
+
+            arr.forEach(d => {
+                const card = document.createElement("div");
+                card.className = "card";
+                if (d.SISA <= 0) {
+                    card.classList.add("lightning");
+                    setTimeout(() => startLightning(card), 1000); // Delay start
+                }
+
+                card.innerHTML = `
+                    <div class="avatar">${d.Nama.charAt(0)}</div>
+                    <div class="name">${d.Nama}</div>
+                    <div class="errors">
+                        ${categories.map(c => `
+                            <div class="error">
+                                <i class="fa-solid ${c.icon}"></i>
+                                ${c.label}: <b>${d[c.key]}</b>
+                            </div>
+                        `).join("")}
+                    </div>
+                    <div class="total-box">
+                        <div class="total-label">Total Complain</div>
+                        <div class="total-value">${d["Total Complain"]}</div>
+                    </div>
+                    <div class="sisa">
+                        Sisa batas toleransi: <b>${d.SISA}</b>
+                    </div>
+                `;
+
+                if (d.SISA <= 0) {
+                    const canvas = document.createElement("canvas");
+                    canvas.className = "lightning-canvas";
+                    canvas.width = 320;
+                    canvas.height = 400; // Approximate card height
+                    card.appendChild(canvas);
+                }
+
+                row.appendChild(card);
+            });
+
+            return row;
+        }
+
+        function startLightning(card) {
+            const canvas = card.querySelector(".lightning-canvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+
+            function animateLoop() {
+                let time = 0;
+                const duration = 6000; // 6 seconds cycle
+
+                function animate() {
+                    time += 16; // ~60fps
+                    const progress = time / duration;
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Random lightning flashes with higher frequency
+                    if (Math.random() < 0.1) { // 10% chance per frame for flash
+                        drawLightning(ctx, canvas.width, canvas.height);
+                    }
+
+                    if (progress >= 1) {
+                        setTimeout(animateLoop, 2000); // Wait 2 seconds before restarting
+                        return;
+                    }
+
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            }
+
+            animateLoop();
+        }
+
+        function drawLightning(ctx, width, height) {
+            const startX = Math.random() * width;
+            const startY = 0;
+            let x = startX;
+            let y = startY;
+            const segments = 10 + Math.floor(Math.random() * 10);
+            const color = Math.random() > 0.5 ? "#ffffff" : "#4da3ff";
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2 + Math.random() * 3;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+
+            for (let i = 0; i < segments; i++) {
+                x += (Math.random() - 0.5) * 50;
+                y += height / segments;
+                ctx.lineTo(x, y);
+            }
+
+            ctx.stroke();
+
+            // Additional branches for realism
+            for (let i = 0; i < 3; i++) {
+                if (Math.random() < 0.3) {
+                    let branchX = x;
+                    let branchY = y;
+                    ctx.beginPath();
+                    ctx.moveTo(branchX, branchY);
+                    for (let j = 0; j < 5; j++) {
+                        branchX += (Math.random() - 0.5) * 30;
+                        branchY += 20;
+                        ctx.lineTo(branchX, branchY);
+                    }
+                    ctx.stroke();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
