@@ -1,321 +1,273 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary Team Leader</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #0b1020;
-            --card: #121a33;
-            --accent: #4da3ff;
-            --danger: #ff4d4d;
-            --text: #eaf0ff;
-            --lightning-white: #ffffff;
-            --lightning-blue: #4da3ff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary Team Leader</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Inter, Arial, sans-serif;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        body {
-            background: linear-gradient(180deg, #060b1a, #0b1020);
-            color: var(--text);
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
+<style>
+:root{
+  --bg:#0b1020;
+  --card:#121a33;
+  --accent:#4da3ff;
+  --danger:#ff4d4d;
+  --text:#eaf0ff;
+  --mp-gold:#e6c15a;
+  --mp-dark:#6f5a1e;
+}
 
-        /* HEADER */
-        h1 {
-            text-align: center;
-            margin-bottom: 50px;
-            letter-spacing: 1px;
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Inter,Arial,sans-serif;
+}
 
-        /* PYRAMID LAYOUT */
-        .pyramid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
+body{
+  background:linear-gradient(180deg,#060b1a,#0b1020);
+  color:var(--text);
+  min-height:100vh;
+  padding:40px 20px;
+}
 
-        .row {
-            display: flex;
-            gap: 26px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+h1{
+  text-align:center;
+  margin-bottom:50px;
+  font-size:2.5rem;
+  font-weight:700;
+}
 
-        /* CARD */
-        .card {
-            width: 320px;
-            position: relative;
-            background: linear-gradient(160deg, #141c3a, #0f1530);
-            border-radius: 18px;
-            padding: 26px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            overflow: hidden;
-        }
+/* PYRAMID */
+.pyramid{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:30px;
+}
 
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-        }
+.row{
+  display:flex;
+  gap:26px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 
-        /* AVATAR */
-        .avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            margin: 0 auto 14px;
-            background: linear-gradient(135deg, #5f9cff, #a3c9ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            font-weight: bold;
-            color: #08122e;
-        }
+/* CARD */
+.card{
+  width:320px;
+  position:relative;
+  background:linear-gradient(160deg,#141c3a,#0f1530);
+  border-radius:18px;
+  padding:26px;
+  box-shadow:0 15px 40px rgba(0,0,0,.45);
+  transition:.4s;
+  overflow:hidden;
+}
 
-        /* NAME */
-        .name {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 18px;
-            font-weight: 600;
-        }
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+}
 
-        /* ERRORS */
-        .errors {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            font-size: 13px;
-        }
+/* AVATAR + MP BADGE */
+.avatar-wrapper{
+  position:relative;
+  width:90px;
+  margin:0 auto 14px;
+}
 
-        .error {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 10px;
-            border-radius: 8px;
-        }
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#2f4fa8,#4da3ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  font-weight:700;
+  color:#f2f6ff;
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,.15),
+    0 8px 20px rgba(0,0,0,.35);
+}
 
-        .error i {
-            color: var(--accent);
-        }
+/* MP BADGE */
+.mp-badge{
+  position:absolute;
+  bottom:-6px;
+  right:-6px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:radial-gradient(circle at top,var(--mp-gold),#caa53a);
+  border:2px solid #1b223f;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.6);
+}
 
-        /* TOTAL */
-        .total-box {
-            margin-top: 18px;
-            border-radius: 12px;
-            overflow: hidden;
-            text-align: center;
-        }
+.mp-badge .value{
+  font-size:13px;
+  font-weight:800;
+  color:#1b1604;
+  line-height:1;
+}
 
-        .total-label {
-            background: #10255a;
-            padding: 10px;
-            font-size: 13px;
-        }
+.mp-badge .label{
+  font-size:9px;
+  font-weight:700;
+  color:#3b2e08;
+  margin-top:-2px;
+}
 
-        .total-value {
-            background: var(--danger);
-            padding: 14px;
-            font-size: 24px;
-            font-weight: bold;
-        }
+/* NAME */
+.name{
+  text-align:center;
+  font-size:18px;
+  margin-bottom:18px;
+  font-weight:600;
+}
 
-        /* SISA */
-        .sisa {
-            margin-top: 14px;
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.25);
-            font-size: 14px;
-        }
+/* ERRORS */
+.errors{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  font-size:13px;
+}
 
-        /* LIGHTNING CANVAS */
-        .lightning-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
-        }
+.error{
+  display:flex;
+  gap:8px;
+  background:rgba(255,255,255,.05);
+  padding:8px 10px;
+  border-radius:8px;
+}
 
-        /* FOOTER */
-        footer {
-            margin-top: 60px;
-            text-align: center;
-            font-size: 12px;
-            opacity: 0.6;
-        }
-    </style>
+.error i{color:var(--accent);}
+
+/* TOTAL */
+.total-box{
+  margin-top:18px;
+  border-radius:12px;
+  overflow:hidden;
+  text-align:center;
+}
+
+.total-label{
+  background:#10255a;
+  padding:10px;
+  font-size:13px;
+}
+
+.total-value{
+  background:var(--danger);
+  padding:14px;
+  font-size:24px;
+  font-weight:bold;
+}
+
+/* SISA */
+.sisa{
+  margin-top:14px;
+  text-align:center;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(0,0,0,.25);
+  font-size:14px;
+}
+
+/* LIGHTNING */
+.lightning-canvas{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:10;
+}
+
+footer{
+  margin-top:60px;
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+}
+</style>
 </head>
+
 <body>
-    <h1>Summary Team Leader</h1>
-    <div class="pyramid" id="pyramid"></div>
-    <footer>Created by Mulya.id</footer>
+<h1>Summary Team Leader</h1>
+<div class="pyramid" id="pyramid"></div>
+<footer>Created by Mulya.id</footer>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxZKVtPdJUHQQs2KQy45HlwBDihFB3F0V5TQwjtW72-XXWkC3juCQPZTqz5zsb1aqC6IA/exec";
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbxZKVtPdJUHQQs2KQy45HlwBDihFB3F0V5TQwjtW72-XXWkC3juCQPZTqz5zsb1aqC6IA/exec";
 
-        const categories = [
-            { key: "Rusak/Pecah/Cacat", label: "Barang Rusak", icon: "fa-glass-water-droplet" },
-            { key: "Barang Kurang", label: "Barang Kurang", icon: "fa-minus-circle" },
-            { key: "Kurang Sparepart", label: "Kurang Sparepart", icon: "fa-box-open" },
-            { key: "Salah Kirim", label: "Salah Kirim", icon: "fa-triangle-exclamation" },
-            { key: "Lebih Kirim", label: "Lebih Kirim", icon: "fa-plus-circle" },
-            { key: "Barang Hilang", label: "Barang Hilang", icon: "fa-magnifying-glass" }
-        ];
+const categories=[
+ {key:"Rusak/Pecah/Cacat",label:"Barang Rusak",icon:"fa-glass-water-droplet"},
+ {key:"Barang Kurang",label:"Barang Kurang",icon:"fa-minus-circle"},
+ {key:"Kurang Sparepart",label:"Kurang Sparepart",icon:"fa-box-open"},
+ {key:"Salah Kirim",label:"Salah Kirim",icon:"fa-triangle-exclamation"},
+ {key:"Lebih Kirim",label:"Lebih Kirim",icon:"fa-plus-circle"},
+ {key:"Barang Hilang",label:"Barang Hilang",icon:"fa-magnifying-glass"}
+];
 
-        fetch(API_URL)
-            .then(r => r.json())
-            .then(res => {
-                const data = res.data.sort((a, b) => a["Total Complain"] - b["Total Complain"]);
+fetch(API_URL)
+.then(r=>r.json())
+.then(res=>{
+  const data=res.data.sort((a,b)=>a["Total Complain"]-b["Total Complain"]);
+  const pyramid=document.getElementById("pyramid");
+  pyramid.appendChild(makeRow(data.slice(0,2)));
+  pyramid.appendChild(makeRow(data.slice(2)));
+});
 
-                const top = data.slice(0, 2);
-                const bottom = data.slice(2);
+function makeRow(arr){
+  const row=document.createElement("div");
+  row.className="row";
 
-                const pyramid = document.getElementById("pyramid");
+  arr.forEach(d=>{
+    const card=document.createElement("div");
+    card.className="card";
 
-                pyramid.appendChild(makeRow(top));
-                pyramid.appendChild(makeRow(bottom));
-            });
+    card.innerHTML=`
+      <div class="avatar-wrapper">
+        <div class="avatar">${d.Nama.charAt(0)}</div>
+        <div class="mp-badge">
+          <div class="value">${d.Mp}</div>
+          <div class="label">MP</div>
+        </div>
+      </div>
 
-        function makeRow(arr) {
-            const row = document.createElement("div");
-            row.className = "row";
+      <div class="name">${d.Nama}</div>
 
-            arr.forEach(d => {
-                const card = document.createElement("div");
-                card.className = "card";
-                if (d.SISA <= 0) {
-                    card.classList.add("lightning");
-                    setTimeout(() => startLightning(card), 1000); // Delay start
-                }
+      <div class="errors">
+        ${categories.map(c=>`
+          <div class="error">
+            <i class="fa-solid ${c.icon}"></i>
+            ${c.label}: <b>${d[c.key]}</b>
+          </div>
+        `).join("")}
+      </div>
 
-                card.innerHTML = `
-                    <div class="avatar">${d.Nama.charAt(0)}</div>
-                    <div class="name">${d.Nama}</div>
-                    <div class="errors">
-                        ${categories.map(c => `
-                            <div class="error">
-                                <i class="fa-solid ${c.icon}"></i>
-                                ${c.label}: <b>${d[c.key]}</b>
-                            </div>
-                        `).join("")}
-                    </div>
-                    <div class="total-box">
-                        <div class="total-label">Total Complain</div>
-                        <div class="total-value">${d["Total Complain"]}</div>
-                    </div>
-                    <div class="sisa">
-                        Sisa batas toleransi: <b>${d.SISA}</b>
-                    </div>
-                `;
+      <div class="total-box">
+        <div class="total-label">Total Complain</div>
+        <div class="total-value">${d["Total Complain"]}</div>
+      </div>
 
-                if (d.SISA <= 0) {
-                    const canvas = document.createElement("canvas");
-                    canvas.className = "lightning-canvas";
-                    canvas.width = 320;
-                    canvas.height = 400; // Approximate card height
-                    card.appendChild(canvas);
-                }
+      <div class="sisa">
+        Sisa batas toleransi: <b>${d.SISA}</b>
+      </div>
+    `;
 
-                row.appendChild(card);
-            });
+    row.appendChild(card);
+  });
 
-            return row;
-        }
-
-        function startLightning(card) {
-            const canvas = card.querySelector(".lightning-canvas");
-            if (!canvas) return;
-            const ctx = canvas.getContext("2d");
-
-            function animateLoop() {
-                let time = 0;
-                const duration = 6000; // 6 seconds cycle
-
-                function animate() {
-                    time += 16; // ~60fps
-                    const progress = time / duration;
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    // Random lightning flashes with higher frequency
-                    if (Math.random() < 0.1) { // 10% chance per frame for flash
-                        drawLightning(ctx, canvas.width, canvas.height);
-                    }
-
-                    if (progress >= 1) {
-                        setTimeout(animateLoop, 2000); // Wait 2 seconds before restarting
-                        return;
-                    }
-
-                    requestAnimationFrame(animate);
-                }
-
-                animate();
-            }
-
-            animateLoop();
-        }
-
-        function drawLightning(ctx, width, height) {
-            const startX = Math.random() * width;
-            const startY = 0;
-            let x = startX;
-            let y = startY;
-            const segments = 10 + Math.floor(Math.random() * 10);
-            const color = Math.random() > 0.5 ? "#ffffff" : "#4da3ff";
-
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2 + Math.random() * 3;
-            ctx.shadowColor = color;
-            ctx.shadowBlur = 10;
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-
-            for (let i = 0; i < segments; i++) {
-                x += (Math.random() - 0.5) * 50;
-                y += height / segments;
-                ctx.lineTo(x, y);
-            }
-
-            ctx.stroke();
-
-            // Additional branches for realism
-            for (let i = 0; i < 3; i++) {
-                if (Math.random() < 0.3) {
-                    let branchX = x;
-                    let branchY = y;
-                    ctx.beginPath();
-                    ctx.moveTo(branchX, branchY);
-                    for (let j = 0; j < 5; j++) {
-                        branchX += (Math.random() - 0.5) * 30;
-                        branchY += 20;
-                        ctx.lineTo(branchX, branchY);
-                    }
-                    ctx.stroke();
-                }
-            }
-        }
-    </script>
+  return row;
+}
+</script>
 </body>
 </html>
