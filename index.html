@@ -263,10 +263,114 @@ function makeRow(arr){
       </div>
     `;
 
+    // Tambahkan canvas petir jika sisa <= 0
+    if (parseInt(d.SISA) <= 0) {
+      const canvas = document.createElement("canvas");
+      canvas.className = "lightning-canvas";
+      canvas.width = 320;
+      canvas.height = 400; // Sesuaikan dengan tinggi card
+      card.appendChild(canvas);
+      animateLightning(canvas);
+    }
+
     row.appendChild(card);
   });
 
   return row;
+}
+
+// Fungsi untuk menganimasikan petir seperti hujan dari segala arah
+function animateLightning(canvas) {
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width;
+  const height = canvas.height;
+
+  // Array untuk menyimpan petir aktif
+  let lightnings = [];
+
+  function drawLightning(x, y, length, angle) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+
+    // Gradien untuk petir (putih ke biru)
+    const gradient = ctx.createLinearGradient(0, 0, 0, length);
+    gradient.addColorStop(0, "white");
+    gradient.addColorStop(1, "blue");
+
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = 2;
+    ctx.shadowColor = "white";
+    ctx.shadowBlur = 5;
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    let currentY = 0;
+    while (currentY < length) {
+      const nextY = currentY + Math.random() * 20 + 10;
+      const offsetX = (Math.random() - 0.5) * 20;
+      ctx.lineTo(offsetX, nextY);
+      currentY = nextY;
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function update() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Tambahkan petir baru secara acak
+    if (Math.random() < 0.1) { // Probabilitas muncul petir baru
+      const startSide = Math.floor(Math.random() * 4); // 0: atas, 1: kanan, 2: bawah, 3: kiri
+      let startX, startY, angle, length;
+
+      switch (startSide) {
+        case 0: // Dari atas
+          startX = Math.random() * width;
+          startY = 0;
+          angle = Math.PI / 2 + (Math.random() - 0.5) * 0.5;
+          length = height;
+          break;
+        case 1: // Dari kanan
+          startX = width;
+          startY = Math.random() * height;
+          angle = Math.PI + (Math.random() - 0.5) * 0.5;
+          length = width;
+          break;
+        case 2: // Dari bawah
+          startX = Math.random() * width;
+          startY = height;
+          angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.5;
+          length = height;
+          break;
+        case 3: // Dari kiri
+          startX = 0;
+          startY = Math.random() * height;
+          angle = (Math.random() - 0.5) * 0.5;
+          length = width;
+          break;
+      }
+
+      lightnings.push({
+        x: startX,
+        y: startY,
+        angle: angle,
+        length: length,
+        life: 10 + Math.random() * 20 // Durasi hidup petir
+      });
+    }
+
+    // Gambar dan update petir
+    lightnings = lightnings.filter(lightning => {
+      drawLightning(lightning.x, lightning.y, lightning.length, lightning.angle);
+      lightning.life--;
+      return lightning.life > 0;
+    });
+
+    requestAnimationFrame(update);
+  }
+
+  update();
 }
 </script>
 </body>
