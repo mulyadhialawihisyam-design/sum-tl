@@ -15,183 +15,199 @@
   --danger:#ff4d4d;
   --text:#eaf0ff;
   --mp-gold:#e6c15a;
-  --mp-dark:#6f5a1e;
 }
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Inter,Arial,sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif;}
 
 body{
   background:linear-gradient(180deg,#060b1a,#0b1020);
   color:var(--text);
   min-height:100vh;
-  padding:40px 20px;
+  padding:40px 16px 80px; /* ⬅️ ruang bawah */
 }
 
 h1{
   text-align:center;
-  margin-bottom:50px;
-  font-size:2.5rem;
+  margin-bottom:40px;
+  font-size:2.2rem;
   font-weight:700;
 }
 
-/* PYRAMID */
-.pyramid{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:30px;
-}
-
-.row{
-  display:flex;
-  gap:26px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
-/* CARD */
-.card{
-  width:320px;
+/* ================= CAROUSEL ================= */
+.carousel-container{
   position:relative;
-  background:linear-gradient(160deg,#141c3a,#0f1530);
-  border-radius:18px;
-  padding:26px;
-  box-shadow:0 15px 40px rgba(0,0,0,.45);
-  transition:.4s;
-  overflow:hidden;
+  max-width:1100px;
+  margin:0 auto 120px; /* ⬅️ JARAK KE FOOTER */
 }
 
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 20px 50px rgba(0,0,0,.6);
+.carousel{
+  position:relative;
+  width:100%;
+  height:480px; /* ⬅️ DITINGGIKAN */
+  perspective:1400px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* AVATAR + MP BADGE */
+/* ================= CARD ================= */
+.card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:240px;
+  padding:16px;
+  border-radius:14px;
+  background:var(--card);
+  box-shadow:0 18px 40px rgba(0,0,0,.55);
+  transition:transform .6s ease, box-shadow .6s ease;
+}
+
+/* ================= NAV ================= */
+.nav-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+  z-index:20;
+}
+.nav-btn.left{left:0;}
+.nav-btn.right{right:0;}
+
+/* ================= AVATAR ================= */
 .avatar-wrapper{
   position:relative;
-  width:90px;
-  margin:0 auto 14px;
+  width:72px;
+  margin:0 auto 8px;
 }
 
 .avatar{
-  width:90px;
-  height:90px;
+  width:72px;
+  height:72px;
   border-radius:50%;
   background:linear-gradient(135deg,#2f4fa8,#4da3ff);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:36px;
+  font-size:28px;
   font-weight:700;
-  color:#f2f6ff;
-  box-shadow:
-    inset 0 0 12px rgba(255,255,255,.15),
-    0 8px 20px rgba(0,0,0,.35);
 }
 
-/* MP BADGE */
+/* Border animasi berputar jika SISA <=0: paduan biru, merah, orange */
+.avatar.alert {
+  position: relative;
+  animation: spin-border 2s linear infinite;
+}
+
+.avatar.alert::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #4da3ff, #ff4d4d, #ff8c00, #4da3ff); /* Biru -> Merah -> Orange -> Biru */
+  z-index: -1;
+  animation: spin-border-inner 2s linear infinite;
+}
+
+@keyframes spin-border {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-border-inner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); } /* Arah berlawanan untuk efek */
+}
+
 .mp-badge{
   position:absolute;
-  bottom:-6px;
-  right:-6px;
-  width:42px;
-  height:42px;
+  bottom:-4px;
+  right:-4px;
+  width:30px;
+  height:30px;
   border-radius:50%;
-  background:radial-gradient(circle at top,var(--mp-gold),#caa53a);
-  border:2px solid #1b223f;
+  background:radial-gradient(circle,var(--mp-gold),#caa53a);
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.6);
-}
-
-.mp-badge .value{
-  font-size:13px;
+  font-size:10px;
   font-weight:800;
   color:#1b1604;
-  line-height:1;
 }
 
-.mp-badge .label{
-  font-size:9px;
-  font-weight:700;
-  color:#3b2e08;
-  margin-top:-2px;
+/* ================= NAME ================= */
+.name-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin-bottom:10px;
 }
 
-/* NAME */
-.name{
-  text-align:center;
-  font-size:18px;
-  margin-bottom:18px;
-  font-weight:600;
-}
+.name{font-size:15px;font-weight:600;}
 
-/* ERRORS */
+/* ================= ERRORS ================= */
 .errors{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  font-size:13px;
+  gap:6px;
+  font-size:12px;
 }
 
 .error{
   display:flex;
-  gap:8px;
-  background:rgba(255,255,255,.05);
-  padding:8px 10px;
-  border-radius:8px;
+  gap:6px;
+  background:#0e1530;
+  padding:6px;
+  border-radius:6px;
+  align-items:center;
 }
 
-.error i{color:var(--accent);}
+.error span{
+  font-size:11px;
+  opacity:.9;
+}
 
-/* TOTAL */
+/* ================= TOTAL ================= */
 .total-box{
-  margin-top:18px;
-  border-radius:12px;
+  margin-top:10px;
+  border-radius:8px;
   overflow:hidden;
   text-align:center;
 }
 
 .total-label{
   background:#10255a;
-  padding:10px;
-  font-size:13px;
+  padding:6px;
+  font-size:11px;
 }
 
 .total-value{
   background:var(--danger);
-  padding:14px;
-  font-size:24px;
-  font-weight:bold;
+  padding:8px;
+  font-size:18px;
+  font-weight:700;
 }
 
-/* SISA */
 .sisa{
-  margin-top:14px;
+  margin-top:8px;
+  font-size:11px;
   text-align:center;
-  padding:10px;
-  border-radius:10px;
-  background:rgba(0,0,0,.25);
-  font-size:14px;
-}
-
-/* LIGHTNING */
-.lightning-canvas{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:10;
+  background:#0e1530;
+  padding:6px;
+  border-radius:6px;
 }
 
 footer{
-  margin-top:60px;
   text-align:center;
   font-size:12px;
   opacity:.6;
@@ -200,55 +216,80 @@ footer{
 </head>
 
 <body>
+
 <h1>Summary Team Leader</h1>
-<div class="pyramid" id="pyramid"></div>
+
+<div class="carousel-container">
+  <button class="nav-btn left" id="prevBtn"><i class="fa fa-chevron-left"></i></button>
+  <div class="carousel" id="carousel"></div>
+  <button class="nav-btn right" id="nextBtn"><i class="fa fa-chevron-right"></i></button>
+</div>
+
 <footer>Created by Mulya.id</footer>
 
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbxZKVtPdJUHQQs2KQy45HlwBDihFB3F0V5TQwjtW72-XXWkC3juCQPZTqz5zsb1aqC6IA/exec";
 
-const categories=[
- {key:"Rusak/Pecah/Cacat",label:"Barang Rusak",icon:"fa-glass-water-droplet"},
- {key:"Barang Kurang",label:"Barang Kurang",icon:"fa-minus-circle"},
- {key:"Kurang Sparepart",label:"Kurang Sparepart",icon:"fa-box-open"},
- {key:"Salah Kirim",label:"Salah Kirim",icon:"fa-triangle-exclamation"},
- {key:"Lebih Kirim",label:"Lebih Kirim",icon:"fa-plus-circle"},
- {key:"Barang Hilang",label:"Barang Hilang",icon:"fa-magnifying-glass"}
+const categories = [
+  {key:"Rusak/Pecah/Cacat",label:"Rusak",icon:"fa-glass-water-droplet"},
+  {key:"Barang Kurang",label:"Kurang",icon:"fa-minus-circle"},
+  {key:"Kurang Sparepart",label:"Sparepart",icon:"fa-box-open"},
+  {key:"Salah Kirim",label:"Salah",icon:"fa-triangle-exclamation"},
+  {key:"Lebih Kirim",label:"Lebih",icon:"fa-plus-circle"},
+  {key:"Barang Hilang",label:"Hilang",icon:"fa-magnifying-glass"}
 ];
+
+const tlPages = {
+  "Mulyadi": "https://mulyadhialawihisyam-design.github.io/mulyadi-tl/",
+  "Jovany Rizki Gusleo": " https://mulyadhialawihisyam-design.github.io/jovan-tl/",
+  "Fahrul Jihat": " https://mulyadhialawihisyam-design.github.io/fahruljihat-tl/",
+  "Millenido Kresna Sejati": "https://mulyadhialawihisyam-design.github.io/milenindo-tl/",
+  "Gerad Polii": " https://mulyadhialawihisyam-design.github.io/gerad-tl/"
+};
+
+let data=[];
+let rotation=0;
+const angle=72;
+const radius=360; /* ⬅️ diturunkan */
 
 fetch(API_URL)
 .then(r=>r.json())
 .then(res=>{
-  const data=res.data.sort((a,b)=>a["Total Complain"]-b["Total Complain"]);
-  const pyramid=document.getElementById("pyramid");
-  pyramid.appendChild(makeRow(data.slice(0,2)));
-  pyramid.appendChild(makeRow(data.slice(2)));
+  data=res.data;
+  render();
 });
 
-function makeRow(arr){
-  const row=document.createElement("div");
-  row.className="row";
+function render(){
+  const c=document.getElementById("carousel");
+  c.innerHTML="";
+  data.forEach(d=>{
+   const card=document.createElement("div");
+card.className="card";
+card.style.cursor="pointer";
 
-  arr.forEach(d=>{
-    const card=document.createElement("div");
-    card.className="card";
+card.onclick=()=>{
+  const url = tlPages[d.Nama];
+  if(url){
+    window.location.href = url;
+  }
+};
 
     card.innerHTML=`
       <div class="avatar-wrapper">
-        <div class="avatar">${d.Nama.charAt(0)}</div>
-        <div class="mp-badge">
-          <div class="value">${d.Mp}</div>
-          <div class="label">MP</div>
-        </div>
+        <div class="avatar ${parseInt(d.SISA)<=0?'alert':''}">${d.Nama.charAt(0)}</div>
+        <div class="mp-badge">${d.Mp}</div>
       </div>
 
-      <div class="name">${d.Nama}</div>
+      <div class="name-row">
+        <div class="name">${d.Nama}</div>
+      </div>
 
       <div class="errors">
         ${categories.map(c=>`
           <div class="error">
             <i class="fa-solid ${c.icon}"></i>
-            ${c.label}: <b>${d[c.key]}</b>
+            <span>${c.label}</span>
+            <b>${d[c.key]}</b>
           </div>
         `).join("")}
       </div>
@@ -258,120 +299,36 @@ function makeRow(arr){
         <div class="total-value">${d["Total Complain"]}</div>
       </div>
 
-      <div class="sisa">
-        Sisa batas toleransi: <b>${d.SISA}</b>
-      </div>
+      <div class="sisa">Sisa toleransi: <b>${d.SISA}</b></div>
     `;
-
-    // Tambahkan canvas petir jika sisa <= 0
-    if (parseInt(d.SISA) <= 0) {
-      const canvas = document.createElement("canvas");
-      canvas.className = "lightning-canvas";
-      canvas.width = 320;
-      canvas.height = 400; // Sesuaikan dengan tinggi card
-      card.appendChild(canvas);
-      animateLightning(canvas);
-    }
-
-    row.appendChild(card);
+    c.appendChild(card);
   });
-
-  return row;
-}
-
-// Fungsi untuk menganimasikan petir seperti hujan dari segala arah
-function animateLightning(canvas) {
-  const ctx = canvas.getContext("2d");
-  const width = canvas.width;
-  const height = canvas.height;
-
-  // Array untuk menyimpan petir aktif
-  let lightnings = [];
-
-  function drawLightning(x, y, length, angle) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-
-    // Gradien untuk petir (putih ke biru)
-    const gradient = ctx.createLinearGradient(0, 0, 0, length);
-    gradient.addColorStop(0, "white");
-    gradient.addColorStop(1, "blue");
-
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = 2;
-    ctx.shadowColor = "white";
-    ctx.shadowBlur = 5;
-
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    let currentY = 0;
-    while (currentY < length) {
-      const nextY = currentY + Math.random() * 20 + 10;
-      const offsetX = (Math.random() - 0.5) * 20;
-      ctx.lineTo(offsetX, nextY);
-      currentY = nextY;
-    }
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  function update() {
-    ctx.clearRect(0, 0, width, height);
-
-    // Tambahkan petir baru secara acak
-    if (Math.random() < 0.1) { // Probabilitas muncul petir baru
-      const startSide = Math.floor(Math.random() * 4); // 0: atas, 1: kanan, 2: bawah, 3: kiri
-      let startX, startY, angle, length;
-
-      switch (startSide) {
-        case 0: // Dari atas
-          startX = Math.random() * width;
-          startY = 0;
-          angle = Math.PI / 2 + (Math.random() - 0.5) * 0.5;
-          length = height;
-          break;
-        case 1: // Dari kanan
-          startX = width;
-          startY = Math.random() * height;
-          angle = Math.PI + (Math.random() - 0.5) * 0.5;
-          length = width;
-          break;
-        case 2: // Dari bawah
-          startX = Math.random() * width;
-          startY = height;
-          angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.5;
-          length = height;
-          break;
-        case 3: // Dari kiri
-          startX = 0;
-          startY = Math.random() * height;
-          angle = (Math.random() - 0.5) * 0.5;
-          length = width;
-          break;
-      }
-
-      lightnings.push({
-        x: startX,
-        y: startY,
-        angle: angle,
-        length: length,
-        life: 10 + Math.random() * 20 // Durasi hidup petir
-      });
-    }
-
-    // Gambar dan update petir
-    lightnings = lightnings.filter(lightning => {
-      drawLightning(lightning.x, lightning.y, lightning.length, lightning.angle);
-      lightning.life--;
-      return lightning.life > 0;
-    });
-
-    requestAnimationFrame(update);
-  }
-
   update();
 }
+
+prevBtn.onclick=()=>spin(-angle);
+nextBtn.onclick=()=>spin(angle);
+
+function spin(a){
+  rotation+=a;
+  update();
+}
+
+function update(){
+  document.querySelectorAll(".card").forEach((card,i)=>{
+    const deg=i*angle-rotation;
+    const isCenter=Math.abs(deg%360)<angle/2;
+
+    card.style.transform=`
+      translate(-50%,-50%)
+      rotateY(${deg}deg)
+      translateZ(${radius}px)
+      scale(${isCenter?1.12:1})
+    `;
+    card.style.zIndex=isCenter?5:1;
+  });
+}
 </script>
+
 </body>
 </html>
